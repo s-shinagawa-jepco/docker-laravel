@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: ./app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./app:/var/www/application
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../application:/var/www/application
+    depends_on:
+      - app
+  mariadb:
+    build:
+      context: ./mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=sho
+      - MYSQL_PASSWORD=Sngw1234%
+      - MYSQL_ROOT_PASSWORD=root
+      - TZ=Asia/Tokyo
+    volumes:
+      - ../.db_data:/var/lib/mysql
